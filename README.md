@@ -54,4 +54,5 @@ docs/           guia de conexão e roadmap de personalização
 
 ## Próximos passos
 
-Ver **[docs/roadmap-personalizacao.md](docs/roadmap-personalizacao.md)**.
+- **[docs/auditoria-catalogo.md](docs/auditoria-catalogo.md)** — auditoria dos 78 produtos e das 6 coleções
+- **[docs/roadmap-personalizacao.md](docs/roadmap-personalizacao.md)** — plano de personalização em fases

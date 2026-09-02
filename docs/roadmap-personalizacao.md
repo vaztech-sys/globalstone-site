@@ -1,8 +1,16 @@
 # Roadmap de personalização
 
-Prioridades pensadas para um **fornecedor de pedras naturais** (granito, quartzo,
-mármore, quartzito) que vende para fabricadores, construtores e consumidor final.
-O funil aqui é *catálogo → orçamento*, não *carrinho → checkout*.
+Escrito **depois** de auditar o catálogo real via Admin API. Ver
+[auditoria-catalogo.md](auditoria-catalogo.md) para os números.
+
+A loja vende **ferramentas e insumos para fabricadores de pedra** — discos
+diamantados, brocas, pads, cubas, torneiras, EPI. Não vende chapas. O cliente
+principal é profissional, sabe o que quer e compra por especificação técnica:
+diâmetro, material de corte, tipo de máquina, molhado ou seco.
+
+Isso define a prioridade: **encontrabilidade por especificação**. Não é um site
+de descoberta visual, é um catálogo técnico onde o cliente precisa chegar no item
+certo em poucos cliques e repetir a compra.
 
 ## Por que tema customizado e não headless
 
@@ -13,48 +21,70 @@ O funil aqui é *catálogo → orçamento*, não *carrinho → checkout*.
 | Apps da Shopify | Funcionam | A maioria quebra |
 | Checkout e pagamentos | Intactos | Reintegrar |
 | SEO já indexado | Preservado | Risco de perder |
-| Controle de design | Total (é HTML/CSS) | Total |
+| Filtros por tag/metafield | Nativos (Search & Discovery) | Reimplementar do zero |
 
-Headless só se paga quando o front precisa de algo que o Liquid não entrega —
-não é o caso de um catálogo de chapas. **Recomendação: tema Liquid.**
+No plano Basic com 78 SKUs e um time pequeno, headless é custo sem retorno.
+**Recomendação: tema Liquid.**
 
-## Fase 1 — Fundação (fazer primeiro)
+## Fase 0 — Limpar o dado (antes de qualquer código)
 
-- [ ] Baixar o tema live e commitar como baseline (`docs/conectar-shopify.md`)
-- [ ] Auditar performance: pedra é negócio de foto pesada. Rodar PageSpeed e
-      converter imagens para WebP com `image_url` + `srcset` do Liquid
-- [ ] Revisar responsividade no mobile — a maioria das buscas por "granite
-      countertops near me" vem de celular
+Esta fase não toca no tema e é a que mais move a agulha. Detalhe e ordem em
+[auditoria-catalogo.md](auditoria-catalogo.md#ordem-de-execução-sugerida).
 
-## Fase 2 — Catálogo de chapas
+- [ ] Padronizar `productType` e preencher os 11 vazios
+- [ ] Aplicar tags de aplicação, corte, máquina, diâmetro e marca
+- [ ] Reescrever as regras das coleções `Blades` e `Sinks`, hoje baseadas em
+      texto do título — elas deixam 15 cubas de fora e colocam lâmina de estilete
+      junto com disco diamantado
+- [ ] Criar as 5 coleções ausentes (core bits, pads, abrasivos, elétricas, EPI)
+- [ ] Corrigir typo "Dakora MOSARA 3018", handles com `™`, handle
+      `positive-inventory`
+- [ ] Preencher SKU nos produtos de março
 
-O ponto onde o site de pedra ganha ou perde o cliente.
+Enquanto isso não estiver feito, filtro na vitrine não tem em que se apoiar:
+com zero tags em 78 produtos, não há o que filtrar.
 
-- [ ] **Metafields de produto** para as specs reais da chapa:
-      material, cor predominante, acabamento (polido/leathered/honed),
-      espessura (2cm/3cm), dimensão da chapa, origem, lote/bundle
-- [ ] **Filtros de coleção** por esses metafields (Search & Discovery, app
-      gratuito da Shopify) — "quartzo branco 3cm polido" tem que ser 3 cliques
-- [ ] **Galeria de chapa em alta resolução** com zoom: o cliente compra pelo
-      veio da pedra, a foto pequena não vende
-- [ ] Seção "peças similares" por material/cor
+## Fase 1 — Navegação e filtros
 
-## Fase 3 — Conversão por orçamento
+- [ ] Instalar **Search & Discovery** (app gratuito da Shopify) e configurar os
+      filtros sobre as tags da Fase 0
+- [ ] Menu principal refletindo a nova taxonomia — hoje 44% do catálogo não está
+      em nenhuma coleção de categoria
+- [ ] Imagem e texto de categoria em cada coleção: hoje as 6 estão sem as duas
+      coisas, e a página de categoria é o que ranqueia para "diamond blade granite"
+- [ ] Trocar a ordenação `best selling` nas coleções, que hoje empurra os itens
+      baratos para o topo
 
-- [ ] Substituir/complementar "Adicionar ao carrinho" por **"Solicitar orçamento"**
-      no que é vendido por m², levando material, cor e metragem para o formulário
-- [ ] Formulário de orçamento com upload de planta ou foto do ambiente
-- [ ] Calculadora de metragem (bancada: comprimento × profundidade + ilha)
-- [ ] Agendamento de visita ao showroom
+## Fase 2 — Página de produto para comprador técnico
 
-## Fase 4 — Confiança e SEO local
+- [ ] **Metafields de especificação** por tipo: diâmetro, furo/arbor, RPM máx.,
+      altura de segmento, material de aplicação, molhado/seco
+- [ ] Tabela de especificação renderizada a partir dos metafields, no lugar do
+      paredão de texto atual
+- [ ] Encurtar títulos para 60–70 caracteres; a especificação sai do título e vai
+      para a tabela
+- [ ] Guia de compatibilidade: qual disco serve para qual máquina e material
+- [ ] "Compre junto": disco + flange, cuba + clips + âncoras
 
-- [ ] Galeria de projetos antes/depois (a prova social que fecha venda de pedra)
-- [ ] Página de showroom com mapa, horário e área de atendimento
-- [ ] Schema.org `LocalBusiness` + `Product` no `theme.liquid` — é o que faz
-      aparecer no mapa do Google
-- [ ] Páginas por cidade/região atendida, se houver mais de um showroom
-- [ ] Depoimentos e credenciais de fabricação
+## Fase 3 — Recompra e volume
+
+O cliente é profissional e recompra consumível. É onde está o ticket recorrente.
+
+- [ ] Recompra em um clique a partir do histórico de pedidos
+- [ ] Preço por caixa/case explícito — vários produtos já vêm em
+      "100 por caixa, 50 caixas por case", mas isso está solto na descrição
+- [ ] Desconto por quantidade para fabricadores
+- [ ] Cadastro de conta comercial / lista de preço para revenda
+- [ ] Alerta de reposição para consumíveis
+
+## Fase 4 — Confiança e SEO
+
+- [ ] Schema.org `Product` com marca, SKU, preço e disponibilidade
+- [ ] Schema `LocalBusiness` — a loja atende a Flórida e existe busca local
+- [ ] Página de marca para STINGER™, SPIDER™ e ZAK™: são marcas próprias e hoje
+      não têm página nenhuma
+- [ ] Política de frete e devolução visível na página de produto
+- [ ] Avaliações de produto
 
 ## Convenções ao mexer no tema
 
@@ -62,6 +92,6 @@ O ponto onde o site de pedra ganha ou perde o cliente.
   `{% schema %}` — assim a equipe configura pelo editor sem pedir dev
 - Lógica repetida vira **snippet** em `theme/snippets/`
 - Nada de texto fixo no Liquid: use `{{ 'chave' | t }}` e os arquivos de
-  `theme/locales/` — o site atende público em inglês e espanhol na Flórida
+  `theme/locales/` — há público em inglês e espanhol na Flórida
 - CSS novo em arquivo próprio dentro de `theme/assets/`, não empilhado no
   arquivo do tema base — facilita atualizar o tema depois

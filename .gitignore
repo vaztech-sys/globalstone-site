@@ -1,0 +1,19 @@
+# Dependências
+node_modules/
+
+# Credenciais — NUNCA commitar
+.env
+.env.*
+!.env.example
+*.pem
+
+# Shopify CLI
+.shopify/
+.shopifyignore
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log

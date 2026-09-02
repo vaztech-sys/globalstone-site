@@ -1,0 +1,22 @@
+{
+  "name": "globalstone-site",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Tema Shopify da Global Stone Florida, versionado em Git.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "theme:list": "shopify theme list",
+    "theme:info": "shopify theme info",
+    "theme:pull": "shopify theme pull --path theme",
+    "theme:dev": "shopify theme dev --path theme",
+    "theme:check": "shopify theme check --path theme",
+    "theme:backup": "shopify theme duplicate --live",
+    "theme:push:preview": "shopify theme push --path theme --unpublished",
+    "theme:push:live": "shopify theme push --path theme --live"
+  },
+  "devDependencies": {
+    "@shopify/cli": "^4.7.1"
+  }
+}

@@ -1,0 +1,13 @@
+# Regras de lint do tema. Rodar com: npm run theme:check
+extends: theme-check:recommended
+
+TemplateLength:
+  enabled: true
+  max_length: 600
+
+UndefinedObject:
+  enabled: true
+
+# O tema ainda não foi baixado; ajuste conforme o tema real.
+MissingTemplate:
+  enabled: true

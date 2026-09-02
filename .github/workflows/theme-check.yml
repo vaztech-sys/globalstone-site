@@ -1,0 +1,35 @@
+name: Theme Check
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  theme-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - run: npm ci
+
+      # O tema só existe depois do primeiro `theme:pull`.
+      # Até lá o job passa sem falhar o CI à toa.
+      - name: Verificar se o tema foi baixado
+        id: theme
+        run: |
+          if [ -d theme/layout ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::theme/ ainda vazio — rode 'npm run theme:pull' e commite o tema."
+          fi
+
+      - name: Theme check
+        if: steps.theme.outputs.present == 'true'
+        run: npm run theme:check
